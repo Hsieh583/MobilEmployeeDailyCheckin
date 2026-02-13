@@ -18,33 +18,34 @@ interface AttendanceListProps {
 export default function AttendanceList({ userId }: AttendanceListProps) {
   const [attendance, setAttendance] = useState<Attendance[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const supabase = createClient()
 
   useEffect(() => {
-    fetchAttendance()
-  }, [])
+    const supabase = createClient()
+    
+    const fetchAttendance = async () => {
+      // Get start of current week (Monday)
+      const now = new Date()
+      const dayOfWeek = now.getDay()
+      const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
+      const monday = new Date(now)
+      monday.setDate(now.getDate() + diff)
+      monday.setHours(0, 0, 0, 0)
 
-  const fetchAttendance = async () => {
-    // Get start of current week (Monday)
-    const now = new Date()
-    const dayOfWeek = now.getDay()
-    const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
-    const monday = new Date(now)
-    monday.setDate(now.getDate() + diff)
-    monday.setHours(0, 0, 0, 0)
+      const { data, error } = await supabase
+        .from('attendance')
+        .select('*')
+        .eq('user_id', userId)
+        .gte('check_time', monday.toISOString())
+        .order('check_time', { ascending: false })
 
-    const { data, error } = await supabase
-      .from('attendance')
-      .select('*')
-      .eq('user_id', userId)
-      .gte('check_time', monday.toISOString())
-      .order('check_time', { ascending: false })
-
-    if (!error && data) {
-      setAttendance(data)
+      if (!error && data) {
+        setAttendance(data)
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
-  }
+
+    fetchAttendance()
+  }, [userId])
 
   const formatDateTime = (dateTime: string) => {
     const date = new Date(dateTime)

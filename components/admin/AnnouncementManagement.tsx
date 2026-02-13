@@ -42,8 +42,8 @@ export default function AnnouncementManagement({ initialAnnouncements }: Announc
       setAnnouncements([data, ...announcements])
       setNewContent('')
       setIsAdding(false)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
     }
   }
 

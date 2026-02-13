@@ -50,8 +50,8 @@ export default function EmployeeManagement({ initialProfiles }: EmployeeManageme
       setProfiles([data, ...profiles])
       setNewEmployee({ email: '', full_name: '', role: 'employee' })
       setIsAdding(false)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unknown error')
     }
   }
 
@@ -101,7 +101,7 @@ export default function EmployeeManagement({ initialProfiles }: EmployeeManageme
             />
             <select
               value={newEmployee.role}
-              onChange={(e) => setNewEmployee({ ...newEmployee, role: e.target.value as any })}
+              onChange={(e) => setNewEmployee({ ...newEmployee, role: e.target.value as 'admin' | 'supervisor' | 'employee' })}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             >
               <option value="employee">員工</option>
