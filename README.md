@@ -1,6 +1,27 @@
 # MobilEmployeeDailyCheckin
-簡易員線上工打卡
+簡易員工線上打卡系統
 
+## ✅ 實作狀態
+
+本專案已完成實作！所有核心功能均已完成開發和測試。
+
+**快速開始:**
+1. 📖 閱讀 [SETUP.md](./SETUP.md) 了解如何設定和部署
+2. 🔧 閱讀 [IMPLEMENTATION.md](./IMPLEMENTATION.md) 了解技術實作細節
+3. 📊 閱讀 [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) 了解專案架構
+
+**已實作功能:**
+- ✅ Google OAuth 登入與白名單驗證
+- ✅ 員工打卡介面（上班/下班）
+- ✅ GPS 座標自動記錄
+- ✅ 本週打卡記錄查看
+- ✅ 系統公告顯示
+- ✅ 管理員：員工管理、請假審核、公告管理
+- ✅ 主管：請假審核功能
+- ✅ Row Level Security (RLS) 資料庫保護
+- ✅ 響應式設計（Mobile First）
+
+---
 
 📋 AI 開發規格書：簡易員工線上打卡 (LiteClock-Logistics)
 1. 專案概述 (Project Context)
@@ -75,4 +96,100 @@ C. 主管/管理介面
  * 不要做排班表：物流業班次太亂，讓他們回歸 Excel 對帳。
  * 不要做薪資計算：這牽涉到複雜勞基法，我們只提供「原始打卡數據」匯出。
  * 重視手機體驗：物流司機 99% 的時間都在手機上操作，按鈕要夠大。
+
+---
+
+## 🚀 快速開始
+
+### 前置需求
+- Node.js 18+ 
+- npm 或 yarn
+- Supabase 帳號
+
+### 安裝步驟
+
+1. **Clone 專案**
+   ```bash
+   git clone https://github.com/Hsieh583/MobilEmployeeDailyCheckin.git
+   cd MobilEmployeeDailyCheckin
+   ```
+
+2. **安裝依賴**
+   ```bash
+   npm install
+   ```
+
+3. **設定環境變數**
+   - 複製 `.env.example` 為 `.env.local`
+   - 填入您的 Supabase 專案資訊
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+   ```
+
+4. **建立資料庫**
+   - 在 Supabase Dashboard 執行 `supabase/migrations/20240101000000_initial_schema.sql`
+
+5. **設定 Google OAuth**
+   - 參考 [SETUP.md](./SETUP.md) 完整設定步驟
+
+6. **啟動開發伺服器**
+   ```bash
+   npm run dev
+   ```
+   開啟 [http://localhost:3000](http://localhost:3000)
+
+### 建立第一個管理員
+
+```sql
+-- 先使用 Google 登入一次，然後在 Supabase SQL Editor 執行：
+INSERT INTO profiles (id, email, full_name, role)
+VALUES (
+  'your-user-uuid-from-auth-users',  
+  'admin@example.com',
+  '管理員名稱',
+  'admin'
+);
+```
+
+## 📚 文件
+
+- [SETUP.md](./SETUP.md) - 完整設定指南
+- [IMPLEMENTATION.md](./IMPLEMENTATION.md) - 技術實作說明
+- [PROJECT_STRUCTURE.md](./PROJECT_STRUCTURE.md) - 專案架構圖
+
+## 🛠️ 技術棧
+
+- **前端**: Next.js 16, TypeScript, Tailwind CSS
+- **圖示**: lucide-react
+- **後端**: Supabase (PostgreSQL + Auth + RLS)
+- **部署**: Vercel / Netlify / Railway
+
+## 📱 功能截圖
+
+### 員工打卡頁面
+- 大型圓形打卡按鈕（256px）
+- 動態顯示「上班打卡」或「下班打卡」
+- 自動記錄 GPS 座標
+- 顯示本週打卡記錄
+
+### 管理後台
+- 員工白名單管理
+- 請假申請審核
+- 系統公告發布
+
+## 🔒 安全性
+
+- Google OAuth 認證
+- Email 白名單機制
+- Row Level Security (RLS)
+- 角色權限控制 (admin/supervisor/employee)
+
+## 📄 授權
+
+MIT License
+
+## 🤝 貢獻
+
+歡迎提交 Issue 和 Pull Request！
 
